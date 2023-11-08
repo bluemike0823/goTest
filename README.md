@@ -1,2 +1,0 @@
-# goTest
- goTest for web
