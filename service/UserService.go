@@ -21,13 +21,11 @@ func FindAllUser(c *gin.Context) {
 func PostUser(c *gin.Context) {
 	db := database.DB
 	user := models.User{}
-	// db.Table("goTest.user").AutoMigrate(&user)
+
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		c.JSON(http.StatusNotAcceptable, "ERROR : "+err.Error())
 	}
-	// fmt.Print(&user)
-	// db.AutoMigrate(&user)
 	err2 := db.Create(&user)
 	if err2.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err2.Error.Error()})
@@ -78,7 +76,6 @@ func PutUser(c *gin.Context) {
 		c.JSON(http.StatusNotAcceptable, "Error : "+err.Error())
 		return
 	}
-	// result := db.Where("user_id = ?", userId).Update(users)
 
 	updatedUser := models.User{}
 	db.Where("user_id = ?", userId).First(&updatedUser)

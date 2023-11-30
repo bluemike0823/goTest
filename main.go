@@ -2,6 +2,8 @@ package main
 
 import (
 	"goTestProj/config"
+	"log"
+	"os"
 
 	"goTestProj/database"
 	"goTestProj/route"
@@ -10,7 +12,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	InfoLogger    *log.Logger
+	WarningLogger *log.Logger
+	ErrorLogger   *log.Logger
+)
+
 func main() {
+
+	logInit()
 
 	router := gin.Default()
 	api := router.Group("/api")
@@ -22,34 +32,23 @@ func main() {
 	router.Run(":" + strconv.Itoa(config.Env.GetInt("server.port")))
 }
 
-// func test(c *gin.Context) {
-// 	str := []byte("OK")
-// 	c.Data(http.StatusOK, "test/plain", str)
-// }
+func logInit() {
+	log.SetPrefix("LOG: ")
+	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.LUTC)
 
-// func plus(c *gin.Context) {
-// 	aStr := c.Param("a")
-// 	bStr := c.Param("b")
+	if err := os.Mkdir("log", 0755); err != nil {
+		log.Fatal("cannot create log dir: ", err)
+	}
 
-// 	a, err := strconv.Atoi(aStr)
-// 	if err != nil {
-// 		c.JSON(400, gin.H{
-// 			"error": "a error",
-// 		})
-// 		return
-// 	}
+	file, err := os.OpenFile("log/logfile.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatal("cannot open log file : ", err)
+	}
 
-// 	b, err := strconv.Atoi(bStr)
-// 	if err != nil {
-// 		c.JSON(400, gin.H{
-// 			"error": "b error",
-// 		})
-// 		return
-// 	}
+	log.SetOutput(file)
 
-// 	result := a + b
+	InfoLogger = log.New(file, "INFO: ", log.Ldate|log.Ltime|log.Lmicroseconds|log.LUTC)
+	WarningLogger = log.New(file, "WARNING: ", log.Ldate|log.Ltime|log.Lmicroseconds|log.LUTC)
+	ErrorLogger = log.New(file, "ERROR: ", log.Ldate|log.Ltime|log.Lmicroseconds|log.LUTC)
 
-// 	c.JSON(200, gin.H{
-// 		"ans": result,
-// 	})
-// }
+}
