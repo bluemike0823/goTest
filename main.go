@@ -4,6 +4,7 @@ import (
 	"goTestProj/config"
 	"log"
 	"os"
+	"time"
 
 	"goTestProj/database"
 	"goTestProj/route"
@@ -22,12 +23,14 @@ func main() {
 
 	logInit()
 
+	log.Println(" : log created")
+
 	router := gin.Default()
 	api := router.Group("/api")
 	route.AddUserRouter(api)
 
 	database.DBinit()
-
+	log.Println(" : servicee start")
 	// router.Run(":8080")
 	router.Run(":" + strconv.Itoa(config.Env.GetInt("server.port")))
 }
@@ -36,11 +39,15 @@ func logInit() {
 	log.SetPrefix("LOG: ")
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.LUTC)
 
-	if err := os.Mkdir("log", 0755); err != nil {
-		log.Fatal("cannot create log dir: ", err)
+	currentDate := time.Now().Format("2006-01-01")
+
+	if _, err := os.Stat("log"); os.IsNotExist(err) {
+		if err := os.Mkdir("log", 0755); err != nil {
+			log.Fatal("cannot create log dir: ", err)
+		}
 	}
 
-	file, err := os.OpenFile("log/logfile.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.OpenFile("log/logfile"+currentDate+".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatal("cannot open log file : ", err)
 	}
