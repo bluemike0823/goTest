@@ -28,9 +28,10 @@ func main() {
 	router := gin.Default()
 	api := router.Group("/api")
 	route.AddUserRouter(api)
+	route.AddRegionRouter(api)
 
 	database.DBinit()
-	log.Println(" : servicee start")
+	log.Println(" : service start")
 	// router.Run(":8080")
 	router.Run(":" + strconv.Itoa(config.Env.GetInt("server.port")))
 }
