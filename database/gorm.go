@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"goTestProj/config"
+	"goTestProj/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -37,6 +38,10 @@ func connectDB() *gorm.DB {
 		fmt.Println("Connect Db failed : ", err)
 		panic(err)
 	}
+
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Region{})
+	db.AutoMigrate(&models.Area{})
 
 	return db.Session(&gorm.Session{
 		PrepareStmt: true,
