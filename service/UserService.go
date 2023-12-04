@@ -31,8 +31,16 @@ func PostUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err2.Error.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, user)
 }
+
+// func autoMigrateModels(db *gorm.DB) {
+// 	models := []ModelInterface{
+// 		&models.User{},
+// 		&models.Region{},
+// 	}
+// }
 
 func DeleteUser(c *gin.Context) {
 
