@@ -17,23 +17,28 @@ var mockRegionsList = []models.Region{
 
 func FindAllRegion(c *gin.Context) {
 
-	c.JSON(http.StatusOK, mockRegionsList)
+	db := database.DB
+	region := []models.Region{}
+	db.Find(&region)
+	c.JSON(http.StatusOK, region)
 }
 
 func SetRegion(c *gin.Context) {
 	db := database.DB
-	user := models.User{}
+	region := models.Region{}
 
-	err := c.ShouldBindJSON(&user)
+	err := c.ShouldBindJSON(&region)
 	if err != nil {
 		c.JSON(http.StatusNotAcceptable, "ERROR : "+err.Error())
 	}
-	err2 := db.Create(&user)
+
+	err2 := db.Create(&region)
 	if err2.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err2.Error.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	c.JSON(http.StatusOK, region)
 }
 
 func FindAllArea(c *gin.Context) {
