@@ -1,4 +1,4 @@
-docker build -t gotest-container .
+docker build -t gotest-image .
 
 @REM docker login localhost:8080
 

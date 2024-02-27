@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
     app_admin:
-      image: gotest-container
+      image: gotest-image
+      container_name: gotest-container
       ports:
         - "8999:8765"
       volumes:
