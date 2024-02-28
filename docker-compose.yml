@@ -1,13 +1,25 @@
 version: '3.8'
 
 services:
-    app_admin:
-      image: gotest-image
-      container_name: gotest-container
-      ports:
-        - "8999:8765"
-      volumes:
-        - cache:/go_cache
+  app_admin:
+    image: gotest-image
+    container_name: gotest-container
+    ports:
+      - "8999:8765"
+    volumes:
+      - cache:/go_cache
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    container_name: postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: aadd2255
+      POSTGRES_DB: gotest
 
 volumes:
   cache:
