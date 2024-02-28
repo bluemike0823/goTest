@@ -2,3 +2,5 @@
 log/logfile2023-11-11.log
 *.log
 .history/
+.vercel/
+hugo/
