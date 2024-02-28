@@ -12,6 +12,8 @@ import (
 var userList = []models.User{}
 
 func FindAllUser(c *gin.Context) {
+
+	fmt.Println("=== FindAllUser == : ")
 	db := database.DB
 	users := []models.User{}
 	db.Find(&users)
@@ -71,6 +73,7 @@ func PutUser(c *gin.Context) {
 	db.Find(&users)
 	userId := c.Param("id")
 	fmt.Println("userId : ", userId)
+
 	newUserData := models.User{}
 	err := c.ShouldBindJSON(&newUserData)
 
@@ -89,4 +92,37 @@ func PutUser(c *gin.Context) {
 	db.Where("user_id = ?", userId).First(&updatedUser)
 
 	c.JSON(http.StatusOK, updatedUser)
+}
+
+func FindAllJurisdiction(c *gin.Context) {
+
+	fmt.Println("=== FindAllJurisdiction ==")
+	userId := c.Param("id")
+	var emptyList []string
+	// userIdList := findJurisdictionByUserId(userId, emptyList)
+	userIdList := findJurisdictionByUserId(userId, emptyList)
+
+	c.JSON(http.StatusOK, userIdList)
+}
+
+func findJurisdictionByUserId(userId string, nowList []string) []string {
+
+	fmt.Println("=== FindByUserId == : ", userId)
+	db := database.DB
+	result := []models.User{}
+	db.Model(&models.User{}).Where("superior = ?", userId).Find(&result)
+
+	if len(result) < 1 {
+
+		fmt.Println("=== --> append == : ", userId)
+		return append(nowList, userId)
+	}
+
+	for _, v := range result {
+		nowList = append(nowList, userId)
+		ansList := findJurisdictionByUserId(v.UserID, nowList)
+		append(nowList, ansList)
+	}
+
+	return nowList
 }

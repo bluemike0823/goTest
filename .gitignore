@@ -4,3 +4,5 @@ log/logfile2023-11-11.log
 .history/
 .vercel/
 hugo/
+go/
+postgres_data/
