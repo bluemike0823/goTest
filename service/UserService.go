@@ -102,7 +102,18 @@ func FindAllJurisdiction(c *gin.Context) {
 	// userIdList := findJurisdictionByUserId(userId, emptyList)
 	userIdList := findJurisdictionByUserId(userId, emptyList)
 
-	c.JSON(http.StatusOK, userIdList)
+	uniqueArray := make(map[string]bool)
+
+	for _, str := range userIdList {
+		uniqueArray[str] = true
+	}
+
+	unique := make([]string, 0, len(uniqueArray))
+	for _, value := range userIdList {
+		unique = append(unique, value)
+	}
+
+	c.JSON(http.StatusOK, unique)
 }
 
 func findJurisdictionByUserId(userId string, nowList []string) []string {
@@ -119,10 +130,11 @@ func findJurisdictionByUserId(userId string, nowList []string) []string {
 	}
 
 	for _, v := range result {
-		nowList = append(nowList, userId)
-		ansList := findJurisdictionByUserId(v.UserID, nowList)
-		append(nowList, ansList)
+		nowList = findJurisdictionByUserId(v.UserID, nowList)
+		nowList = append(nowList, v.UserID)
+		// append(nowList, ansList)
 	}
+	// append(nowList, userId)
 
-	return nowList
+	return append(nowList, userId)
 }
