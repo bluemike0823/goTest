@@ -5,6 +5,7 @@ import (
 	"goTestProj/database"
 	"goTestProj/models"
 	"net/http"
+	"sort"
 
 	"github.com/gin-gonic/gin"
 )
@@ -112,7 +113,7 @@ func FindAllJurisdiction(c *gin.Context) {
 	for _, value := range userIdList {
 		unique = append(unique, value)
 	}
-
+	sort.Strings(unique)
 	c.JSON(http.StatusOK, unique)
 }
 
@@ -131,7 +132,7 @@ func findJurisdictionByUserId(userId string, nowList []string) []string {
 
 	for _, v := range result {
 		nowList = findJurisdictionByUserId(v.UserID, nowList)
-		nowList = append(nowList, v.UserID)
+		// nowList = append(nowList, v.UserID)
 		// append(nowList, ansList)
 	}
 	// append(nowList, userId)
