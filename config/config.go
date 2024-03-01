@@ -31,6 +31,6 @@ func initViper() *viper.Viper {
 	v.SetEnvPrefix("testGo")
 	v.AutomaticEnv()
 
-	fmt.Println("%+v\n", v.AllSettings())
+	// fmt.Println("%+v\n", v.AllSettings())
 	return v
 }
