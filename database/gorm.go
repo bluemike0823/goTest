@@ -42,6 +42,13 @@ func connectDB() *gorm.DB {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Region{})
 	db.AutoMigrate(&models.Area{})
+	db.AutoMigrate(&models.Auth{})
+	// err = db.Create(&models.Auth{Username: "admin", Password: "admin"}).Error
+	db.Create(&models.Auth{Username: "admin", Password: "admin"})
+    // if err != nil {
+    //     // panic("無法創建初始資料")
+    // }
+
 
 	return db.Session(&gorm.Session{
 		PrepareStmt: true,

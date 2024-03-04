@@ -27,6 +27,7 @@ func main() {
 
 	router := gin.Default()
 	api := router.Group("/api")
+	route.AddAuthRouter(api)
 	route.AddUserRouter(api)
 	route.AddRegionRouter(api)
 
