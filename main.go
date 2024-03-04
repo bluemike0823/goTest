@@ -2,7 +2,9 @@ package main
 
 import (
 	"goTestProj/config"
+	"goTestProj/service"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -26,6 +28,7 @@ func main() {
 	log.Println(" : log created")
 
 	router := gin.Default()
+	http.HandleFunc("/", service.MethodHandler)
 	api := router.Group("/api")
 	route.AddAuthRouter(api)
 	route.AddUserRouter(api)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goTestProj/config"
 	"goTestProj/models"
+	"net/http"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -56,4 +57,25 @@ func ParseToken(token string) (*jwt.Claims, error) {
 	}
 
 	return nil, err
+}
+
+func MethodHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		authorizationHeader := r.Header.Get("Authorization")
+		if authorizationHeader == "" {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+
+		tokenString := authorizationHeader[len("Bearer "):]
+		_ , err := ParseToken(tokenString)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		w.WriteHeader(http.StatusOK)
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
 }
