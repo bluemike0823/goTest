@@ -5,9 +5,11 @@ import (
 	"goTestProj/config"
 	"goTestProj/models"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 var jwtSecret = []byte(config.Env.GetString("jwt.secret"))
@@ -78,4 +80,38 @@ func MethodHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+}
+
+func withJWTVerification() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if c.Request.Method != http.MethodGet {
+			tokenString := extractTokenFromHeader(c.Request)
+			if tokenString == "" {
+				c.JSON(http.StatusUnauthorized, gin.H{
+					"error":"Unauthorized"
+				})
+			}
+		}
+	}
+}
+
+func extractTokenFromHeader(r *http.Request) string {
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		return ""
+	}
+
+	splitToken := strings.Split(authHeader, "Bearer ")
+	
+	if len(splitToken) != 2 {
+		return ""
+	}
+
+	return splitToken[1]
+}
+
+func protectedHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message" : "your are accessed here",
+	})
 }

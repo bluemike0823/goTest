@@ -9,4 +9,4 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["go","run","main.go","dev"]
+CMD ["go","run","main.go","package-dev"]

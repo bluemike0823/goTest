@@ -28,11 +28,13 @@ func main() {
 	log.Println(" : log created")
 
 	router := gin.Default()
-	http.HandleFunc("/", service.MethodHandler)
+	// http.HandleFunc("/", service.MethodHandler)
 	api := router.Group("/api")
 	route.AddAuthRouter(api)
 	route.AddUserRouter(api)
 	route.AddRegionRouter(api)
+	
+	http.HandleFunc("/api", service.MethodHandler)
 
 	database.DBinit()
 	log.Println(" : service start")
