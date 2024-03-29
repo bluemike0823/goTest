@@ -1,0 +1,61 @@
+work : 
+go run main.go dev        
+
+go dockerize :
+docker build --no-cache -t gotest-container .
+docker run -d --name postgres -p 0.0.0.0:5432:5432 -e POSTGRES_PASSWORD=aadd2255 postgres:13.12
+
+switch docker:
+bcdedit /set hypervisorlaunchtype auto
+dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
+
+switch bs5:
+bcdedit /set hypervisorlaunchtype off
+dism.exe /Online /Disable-Feature:Microsoft-Hyper-V
+
+Postgres container params : 
+container name : postgrescontainer
+POSTGRES_USER : postgres
+POSTGRES_PASSWORD : ad25*2
+POSTGRES_DB : postgres
+
+for virtual server :
+curl https://kktix.com
+traceroute kktix.com
+
+sudo apt update
+sudo apt install software-properties-common
+sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget
+wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz
+tar -xf Python-3.9.9.tgz
+
+sudo apt-get install build-essential
+cd Python-3.9.9
+./configure --enable-optimizations
+make -j$(nproc)
+sudo make altinstall
+
+sudo apt install git
+git clone https://github.com/max32002/tixcraft_bot
+cd tixcraft_bot
+python3.9 -m pip3.9 install -r pip-req.txt
+python -m pip install -r pip-req.txt
+
+# python3.9 -m tkinter
+sudo apt-get install python3-tk
+python3.9 settings.py
+python settings.py
+
+xvfb-run python3 settings.py
+
+# install pip3.9
+wget https://bootstrap.pypa.io/get-pip.py
+sudo apt install zlib1g zlib1g-dev
+cd Python-3.9.9
+./configure --enable-optimizations
+make -j$(nproc)
+sudo make altinstall
+
+
+
+sudo python3.9 get-pip.py
