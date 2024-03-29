@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"fmt"
 	"goTestProj/error"
 	"goTestProj/service"
 	"net/http"
@@ -13,6 +14,8 @@ func JWT() gin.HandlerFunc {
 		var code int
 		var data interface{}
 
+		fmt.Println("== JWT() gin.HandlerFunc ==")
+
 		code = error.SUCCESS
 		token := c.Query("token")
 		if token == "" {
@@ -22,21 +25,26 @@ func JWT() gin.HandlerFunc {
 			_, err := service.ParseToken(token)
 			if err != nil {
 				code = error.ERROR_AUTH_CHECK_TOKEN_FAIL
-			// } else if time.Now().Unix() > claims.ExpiresAt {
-			// 	code = error.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
 			}
+			//  else if time.Now().Unix() > claims.ExpiresAt {
+			// 	code = error.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
+			// }
 		}
 
 		if code != error.SUCCESS {
 			c.JSON(http.StatusUnauthorized, gin.H{
-				"code" : code,
-				"msg" : error.GetMsg(code),
-				"data" : data,
+				"code": code,
+				"msg":  error.GetMsg(code),
+				"data": data,
 			})
+
+			fmt.Println("== JWT() : failed ==")
 
 			c.Abort()
 			return
 		}
+
+		fmt.Println("== JWT() : success ==")
 
 		c.Next()
 

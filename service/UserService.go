@@ -25,6 +25,8 @@ func PostUser(c *gin.Context) {
 	db := database.DB
 	user := models.User{}
 
+	fmt.Println("=== PostUser ===")
+
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		c.JSON(http.StatusNotAcceptable, "ERROR : "+err.Error())
@@ -34,6 +36,8 @@ func PostUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err2.Error.Error()})
 		return
 	}
+
+	fmt.Println("=== PostUser END ===")
 
 	c.JSON(http.StatusOK, user)
 }
