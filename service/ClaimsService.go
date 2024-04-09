@@ -23,13 +23,22 @@ func GenerateToken(username string, password string) (string, error) {
 	expireTime := nowTime.Add(3 * time.Hour)
 
 	claims := models.Claims{
-		username,
-		password,
-		jwt.StandardClaims{
+		Username: username,
+		Password: password,
+		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "gin-blog",
 		},
 	}
+
+	// claims := models.Claims{
+	// 	username,
+	// 	password,
+	// 	jwt.StandardClaims{
+	// 		ExpiresAt: expireTime.Unix(),
+	// 		Issuer:    "gin-blog",
+	// 	},
+	// }
 
 	//  帶入演算法及claims, 產出token
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
