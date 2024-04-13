@@ -16,5 +16,6 @@ func AddUserRouter(r *gin.RouterGroup) {
 	user.PUT("/:id", jwt.JWT(), service.PutUser)
 
 	user.GET("/region/:regionCode", service.FindUserByRegion)
+	user.GET("/area/:areaCode", service.FindUserByArea)
 
 }

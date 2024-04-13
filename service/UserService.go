@@ -167,3 +167,26 @@ func FindUserByRegion(c *gin.Context) {
 
 	c.JSON(http.StatusOK, users)
 }
+
+func FindUserByArea(c *gin.Context) {
+
+	fmt.Println("=== FindUserByRegion ==")
+	db := database.DB
+	users := []models.User{}
+	db.Find(&users)
+	param := c.Param("areaCode")
+	areaCode, _ := strconv.Atoi(param)
+
+	fmt.Println("=== regionCode ==", areaCode)
+
+	db.Where("area_code = ?", areaCode).Find(&users)
+
+	fmt.Println("=== users ==", users)
+	fmt.Println("=== users size ==", len(users))
+	if len(users) == 0 {
+		c.JSON(http.StatusNotAcceptable, "Error : no data")
+		return
+	}
+
+	c.JSON(http.StatusOK, users)
+}
