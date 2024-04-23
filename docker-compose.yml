@@ -12,16 +12,16 @@ services:
     depends_on:
       - postgres
 
-  postgres:
-    image: postgres
-    container_name: postgres-container
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: aadd2255
-      POSTGRES_DB: gotest
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+  # postgres:
+  #   image: postgres
+  #   container_name: postgres-container
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: aadd2255
+  #     POSTGRES_DB: gotest
+  #   volumes:
+  #     - ./postgres_data:/var/lib/postgresql/data
 
 

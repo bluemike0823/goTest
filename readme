@@ -59,3 +59,26 @@ sudo make altinstall
 
 
 sudo python3.9 get-pip.py
+
+# gcloud service
+
+gcloud auth login
+
+# gcloud config set project gotest-405213
+
+# 1. set service-account
+gcloud iam service-accounts create go-test-service-accounts --display-name "go-test"
+
+# 2. set character
+gcloud projects add-iam-policy-binding gotest-405213 --member serviceAccount:go-test-service-accounts@gotest-405213.iam.gserviceaccount.com --role roles/owner
+
+# 3. set key.json
+gcloud iam service-accounts keys create gcp_key.json --iam-account go-test-service-accounts@gotest-405213.iam.gserviceaccount.com
+
+gcloud --project=gotest-405213
+
+gotest-405213
+
+# gcloud iam workload-identity-pools create "github-pool"
+#  --location="global" 
+#  --display-name="GitHub Deployment Poll"
