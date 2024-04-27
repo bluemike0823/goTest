@@ -119,8 +119,31 @@ func FindAllJurisdiction(c *gin.Context) {
 		unique = append(unique, value)
 	}
 	sort.Strings(unique)
-	c.JSON(http.StatusOK, unique)
+
+	uniqueUsersList := parseToUserData(unique)
+
+	// c.JSON(http.StatusOK, unique)
+	c.JSON(http.StatusOK, uniqueUsersList)
 }
+
+func parseToUserData(unique []string) []models.User {
+
+	users := []models.User{}
+	db := database.DB
+	db.Model(&models.User{}).Where("user_id IN ?", unique).Find(&users)
+	// for _, err := range unique {
+	// 	user := findUserById()
+	// 	users = append(users, user)
+	// }
+
+	return users
+
+}
+
+// func getUserByID(id int) models.User {
+
+// 	return models.User{ID: id, Name: fmt.Sprintf("User%d", id)}
+// }
 
 func findJurisdictionByUserId(userId string, nowList []string) []string {
 
@@ -130,17 +153,13 @@ func findJurisdictionByUserId(userId string, nowList []string) []string {
 	db.Model(&models.User{}).Where("superior = ?", userId).Find(&result)
 
 	if len(result) < 1 {
-
-		fmt.Println("=== --> append == : ", userId)
 		return append(nowList, userId)
 	}
 
 	for _, v := range result {
 		nowList = findJurisdictionByUserId(v.UserID, nowList)
-		// nowList = append(nowList, v.UserID)
-		// append(nowList, ansList)
 	}
-	// append(nowList, userId)
+
 
 	return append(nowList, userId)
 }
