@@ -59,3 +59,6 @@ sudo make altinstall
 
 
 sudo python3.9 get-pip.py
+
+
+go build main.go
