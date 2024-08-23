@@ -39,7 +39,8 @@ func connectDB() *gorm.DB {
 		//  db, err := gorm.Open(postgreCon, &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
-			TablePrefix:   "public.",
+			// TablePrefix:   "public.",
+			TablePrefix: "postgres.",
 		},
 	})
 
