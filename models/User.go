@@ -8,7 +8,8 @@ import (
 
 type User struct {
 	gorm.Model
-	UserID      string    `gorm:"column:user_id;unique"`
+	// UserID      string    `gorm:"column:user_id;unique"`
+	UserID      string    `gorm:"column:user_id;primaryKey"`
 	UserName    string    `gorm:"column:user_name"`
 	RegionCode  int       `gorm:"column:region_code"`
 	Gender      string    `gorm:"column:gender"`

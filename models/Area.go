@@ -6,7 +6,8 @@ import (
 
 type Area struct {
 	gorm.Model
-	AreaId int `gorm:"column:area_id;unique"`
+	// AreaId int `gorm:"column:area_id;unique"`
+	AreaId int `gorm:"column:area_id;primaryKey"`
 	// RegionTestColumn string `gorm:"column:region_test_column"`
 	AreaName string `gorm:"column:area_name;unique"`
 }

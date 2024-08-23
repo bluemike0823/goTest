@@ -56,7 +56,13 @@ cd Python-3.9.9
 make -j$(nproc)
 sudo make altinstall
 
-
+# for mysql params
+MYSQL_DATABASE : postgres
+MYSQL_USER : postgres
+MYSQL_PASSWORD : aadd2255
+MYSQL_ROOT_PASSWORD : aadd2255
+MYSQL_ALLOW_EMPTY_PASSWORD : no
+MYSQL_RANDOM_ROOT_PASSWORD : yes
 
 sudo python3.9 get-pip.py
 
