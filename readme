@@ -56,7 +56,13 @@ cd Python-3.9.9
 make -j$(nproc)
 sudo make altinstall
 
-
+# for mysql params
+MYSQL_DATABASE : postgres
+MYSQL_USER : postgres
+MYSQL_PASSWORD : aadd2255
+MYSQL_ROOT_PASSWORD : aadd2255
+MYSQL_ALLOW_EMPTY_PASSWORD : no
+MYSQL_RANDOM_ROOT_PASSWORD : yes
 
 sudo python3.9 get-pip.py
 
@@ -66,19 +72,12 @@ gcloud auth login
 
 # gcloud config set project gotest-405213
 
-# 1. set service-account
-gcloud iam service-accounts create go-test-service-accounts --display-name "go-test"
+gcloud iam service-accounts create "github-service-account" --project %GOTEST_PROJECT_ID%
 
-# 2. set character
-gcloud projects add-iam-policy-binding gotest-405213 --member serviceAccount:go-test-service-accounts@gotest-405213.iam.gserviceaccount.com --role roles/owner
+gcloud iam workload-identity-pools create "github-pool" --project=%GOTEST_PROJECT_ID% --location="global" --display-name="GitHub Deployment Poll"
 
-# 3. set key.json
-gcloud iam service-accounts keys create gcp_key.json --iam-account go-test-service-accounts@gotest-405213.iam.gserviceaccount.com
+gcloud iam workload-identity-pools describe "github-pool" --project=%GOTEST_PROJECT_ID% --location="global" --format="value(name)"
 
-gcloud --project=gotest-405213
+gcloud iam workload-identity-pools providers create-oidc "github-provider" --project=%GOTEST_PROJECT_ID% --location="global" --workload-identity-pool="github-pool" --display-name="Github Provider" --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.repository=assertion.repository" --issuer-uri="https://token.actions.githubusercontent.com"
 
-gotest-405213
-
-# gcloud iam workload-identity-pools create "github-pool"
-#  --location="global" 
-#  --display-name="GitHub Deployment Poll"
+gcloud iam service-accounts add-iam-policy-binding "github-service-account@"%GOTEST_PROJECT_ID%".iam.gserviceaccount.com" --project=%GOTEST_PROJECT_ID% --role="roles/iam.workloadIdentityUser" --member="principalSet://iam.googleapis.com/"%GOTEST_WORKLOAD_IDENTITY_POOL_ID%"/attribute.repository/"%GOTEST_REPO%
