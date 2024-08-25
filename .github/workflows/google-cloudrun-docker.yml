@@ -32,7 +32,7 @@ name: 'Build and Deploy to Cloud Run'
 on:
   push:
     branches:
-      - '"gcp-deploy"'
+      - "gcp-deploy"
 
 env:
   PROJECT_ID: 'testlineapi-358311' # TODO: update to your Google Cloud project ID

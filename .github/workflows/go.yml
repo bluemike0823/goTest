@@ -5,9 +5,9 @@ name: Go
 
 on:
   push:
-    branches: [ "gcp-deploy" ]
+    branches: [  ]
   pull_request:
-    branches: [ "gcp-deploy" ]
+    branches: [  ]
 
 jobs:
 
