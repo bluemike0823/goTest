@@ -68,3 +68,16 @@ sudo python3.9 get-pip.py
 
 
 go build main.go
+
+# 建立 github action to GCP 
+# 參考 https://ithelp.ithome.com.tw/articles/10313024
+
+gcloud iam service-accounts create "github-service-account" --project %GOTEST_PROJECT_ID%
+
+gcloud iam workload-identity-pools create "github-pool" --project=%GOTEST_PROJECT_ID% --location="global" --display-name="GitHub Deployment Poll"
+
+gcloud iam workload-identity-pools describe "github-pool" --project=%GOTEST_PROJECT_ID% --location="global" --format="value(name)"
+
+gcloud iam workload-identity-pools providers create-oidc "github-provider" --project=%GOTEST_PROJECT_ID% --location="global" --workload-identity-pool="github-pool" --display-name="Github Provider" --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.repository=assertion.repository" --issuer-uri="https://token.actions.githubusercontent.com"
+
+gcloud iam service-accounts add-iam-policy-binding "github-service-account@"%GOTEST_PROJECT_ID%".iam.gserviceaccount.com" --project=%GOTEST_PROJECT_ID% --role="roles/iam.workloadIdentityUser" --member="principalSet://iam.googleapis.com/"%GOTEST_WORKLOAD_IDENTITY_POOL_ID%"/attribute.repository/"%GOTEST_REPO%
