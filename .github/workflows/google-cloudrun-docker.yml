@@ -37,7 +37,7 @@ on:
 env:
   HELLO: ${{ secrets.HELLO }}
   PROJECT_ID: '1095759761045' # TODO: update to your Google Cloud project ID
-  REGION: 'global' # TODO: update to your region
+  REGION: 'us-central1' # TODO: update to your region
   SERVICE: 'github-provider' # TODO: update to your service name
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WIF_PROVIDER }}  # TODO: update to your workload identity provider
 
