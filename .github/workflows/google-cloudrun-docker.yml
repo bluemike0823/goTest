@@ -35,7 +35,6 @@ on:
       - "gcp-deploy"
 
 env:
-  HELLO: ${{ secrets.HELLO }}
   PROJECT_ID: '1095759761045' # TODO: update to your Google Cloud project ID
   REGION: 'us-central1' # TODO: update to your region
   SERVICE: 'github-provider' # TODO: update to your service name
@@ -74,9 +73,10 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
+          # gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
       - name: 'Build and Push Container'
         run: |-
-          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ env.REGION }}-docker.pkg.dev
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
           docker build --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
