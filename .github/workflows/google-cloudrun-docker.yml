@@ -37,7 +37,7 @@ on:
 env:
   PROJECT_ID: 'testlineapi-358311' # TODO: update to your Google Cloud project ID
   REGION: 'us-central1' # TODO: update to your region
-  SERVICE: 'github-service-account' # TODO: update to your service name
+  SERVICE: 'github-provider' # TODO: update to your service name
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WIF_PROVIDER }}  # TODO: update to your workload identity provider
 
 jobs:
