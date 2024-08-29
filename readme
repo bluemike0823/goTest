@@ -67,7 +67,7 @@ MYSQL_RANDOM_ROOT_PASSWORD : yes
 sudo python3.9 get-pip.py
 
 # gcloud service
-
+# app5252
 gcloud auth login
 
 # gcloud config set project gotest-405213
