@@ -1,17 +1,6 @@
 version: '3.8'
 
 services:
-  app_admin:
-    image: gotest-image
-    container_name: gotest-container
-    ports:
-      - "8999:8765"
-    volumes:
-      # - cache:/go_cache
-      - ./go/pkg/mod:/go/pkg/mod
-    depends_on:
-      - postgres
-
   postgres:
     image: postgres
     container_name: postgres-container
@@ -23,5 +12,17 @@ services:
       POSTGRES_DB: gotest
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+
+  app_admin:
+    image: gotest-image
+    container_name: gotest-container
+    ports:
+      - "8999:8765"
+    volumes:
+      # - cache:/go_cache
+      - ./go/pkg/mod:/go/pkg/mod
+    depends_on:
+      - postgres
+
 
 
