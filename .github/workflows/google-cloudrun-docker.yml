@@ -64,6 +64,9 @@ jobs:
           project_id: '${{ env.PROJECT_ID }}'
           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
 
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
+
       # BEGIN - Docker auth and build
       #
       # If you already have a container image, you can omit these steps.
