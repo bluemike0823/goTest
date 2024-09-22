@@ -64,8 +64,8 @@ jobs:
           project_id: '${{ env.PROJECT_ID }}'
           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
 
-      - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
+      # - name: Start containers
+      #   run: docker-compose -f "docker-compose.yml" up -d --build
 
       # BEGIN - Docker auth and build
       #
@@ -77,13 +77,16 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
-          # gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+      # gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
       - name: 'Build and Push Container'
         run: |-
           gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ env.REGION }}-docker.pkg.dev
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ github.sha }}"
-          docker build --tag "${DOCKER_TAG}" .
-          docker push "${DOCKER_TAG}"
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml push
+      # docker build --tag "${DOCKER_TAG}" .
+      # docker push "${DOCKER_TAG}"
+
       - name: 'Deploy to Cloud Run'
 
         # END - Docker auth and build
